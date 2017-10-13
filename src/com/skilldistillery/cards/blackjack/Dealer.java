@@ -6,6 +6,7 @@ public class Dealer extends Player {
 	public Dealer() {
 		this.deck = new Deck();
 		this.hand = new Hand();
+		this.name = "Dealer";
 	}
 	public void dealToPlayer(Player player) {
 		//deals one card to the player
@@ -15,10 +16,6 @@ public class Dealer extends Player {
 	public void dealToDealer() {
 		//deals one card to the dealer
 		this.addToHand(deck.draw());
-	}
-	
-	public void clearTable() {
-		//clears the table of cards
 	}
 	
 	public void getNewDeck() {

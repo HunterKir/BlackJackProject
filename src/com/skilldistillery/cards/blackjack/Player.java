@@ -45,9 +45,17 @@ public class Player {
 		this.name = name;
 	}
 	
+	public void newHand() {
+		this.hand = new Hand();
+	}
+	
 	public void addToHand(Card card) {
 		//adds a card to the hand
 		hand.addCard(card);
+	}
+
+	public Hand getHand() {
+		return hand;
 	}
 	
 }
