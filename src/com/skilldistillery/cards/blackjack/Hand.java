@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Hand {
-	private List<Card> hand;
-	private boolean ace;
+	private List<Card> hand = new ArrayList<>();
 	public Hand() {
-		this.hand = new ArrayList<>();
 	}
 	
 	public void addCard(Card card) {

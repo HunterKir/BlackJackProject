@@ -13,6 +13,7 @@ public class Player {
 	
 	public Player(String name) {
 		super();
+		this.hand = new Hand();
 		this.name = name;
 		this.standing = false;
 	}
@@ -24,16 +25,20 @@ public class Player {
 	}
 	
 	public boolean isStanding() {
-		return this.standing;
+		return standing;
 	}
 	
 	public void stand() {
 		//locks in the player's points
-		this.standing = true;
+		standing = true;
 	}
 
 	public int getPoints() {
 		points = hand.calculatePoints();
+		if (points > 21) {
+			standing = true;
+//			points = 0;
+		}
 		return points;
 	}
 
@@ -56,6 +61,10 @@ public class Player {
 
 	public Hand getHand() {
 		return hand;
+	}
+
+	public void setStanding(boolean standing) {
+		this.standing = standing;
 	}
 	
 }
