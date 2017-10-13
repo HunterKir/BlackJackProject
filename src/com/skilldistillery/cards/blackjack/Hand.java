@@ -14,4 +14,20 @@ public class Hand {
 		//adds a card to the hand
 		hand.add(card);
 	}
+	
+	public int calculatePoints() {
+		int total = 0;
+		for (Card card : hand) {
+			total += card.getValue();
+		}
+		return total;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(hand);
+		return builder.toString();
+	}
+	
 }

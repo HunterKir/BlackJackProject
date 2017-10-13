@@ -41,8 +41,4 @@ public class Dealer extends Player {
 		}
 	}
 	
-	@Override
-	public void stand() {
-		//if the dealer has over 17, and the player does not have more points, lock in points
-	}
 }

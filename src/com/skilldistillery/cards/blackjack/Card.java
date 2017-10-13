@@ -8,6 +8,10 @@ public class Card {
         rank = r;
         suit = s;
     }
+    
+    public int getValue() {
+    		return rank.getValue();
+    }
 
     @Override
     public String toString() {
