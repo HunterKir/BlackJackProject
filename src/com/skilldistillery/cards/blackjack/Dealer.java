@@ -28,8 +28,17 @@ public class Dealer extends Player {
 	}
 	
 	@Override
-	public void hit() {
+	public void hit(Player player) {
 		// if the dealer has less than 17, or the player has more points, deal a card to the dealer
+		if (this.points < 17) {
+			dealToDealer();
+		}
+		else if (this.points < player.getPoints()) {
+			dealToDealer();
+		}
+		else {
+			stand();
+		}
 	}
 	
 	@Override

@@ -3,8 +3,9 @@ package com.skilldistillery.cards.blackjack;
 public class Player {
 	protected Hand hand;
 	protected int points;
-	public void hit() {
+	public void hit(Player player) {
 		//makes the dealer deal a card to the player
+		((Dealer) player).dealToPlayer(this);
 	}
 	
 	public void stand() {
