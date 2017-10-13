@@ -1,8 +1,8 @@
 package com.skilldistillery.cards.blackjack;
 
 public class Player {
-	private Hand hand;
-	private int points;
+	protected Hand hand;
+	protected int points;
 	public void hit() {
 		//makes the dealer deal a card to the player
 	}
@@ -18,6 +18,10 @@ public class Player {
 	public void setPoints(int points) {
 		this.points = points;
 	}
-
+	
+	public void addToHand(Card card) {
+		//adds a card to the hand
+		hand.addCard(card);
+	}
 	
 }

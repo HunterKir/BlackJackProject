@@ -1,17 +1,30 @@
 package com.skilldistillery.cards.blackjack;
 
 public class Dealer extends Player {
+	private Deck deck;
 	
-	public void dealToPlayer() {
+	public Dealer() {
+		this.deck = new Deck();
+		this.hand = new Hand();
+	}
+	public void dealToPlayer(Player player) {
 		//deals one card to the player
+		player.addToHand(deck.draw());
 	}
 	
 	public void dealToDealer() {
 		//deals one card to the dealer
+		this.addToHand(deck.draw());
 	}
 	
 	public void clearTable() {
 		//clears the table of cards
+	}
+	
+	public void getNewDeck() {
+		//gives the dealer a new, shuffled deck
+		this.deck = new Deck();
+		deck.shuffle();
 	}
 	
 	@Override
