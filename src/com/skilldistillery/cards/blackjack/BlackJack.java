@@ -23,11 +23,9 @@ public class BlackJack {
 		deal();
 		deal();
 		while (inGame) {
+			dealer.checkDeck();
 			determineWinner();
-			displayDealerHand();
-			System.out.println("Points: " + dealer.getPoints());
-			displayPlayerHand();
-			System.out.println("Points: " + player.getPoints());
+			displayHands();
 			displayMenu();
 			menuSelect(inputFilter(kb.next()));
 			dealerMove();
@@ -41,6 +39,9 @@ public class BlackJack {
 		} else if (input == 2) {
 			// stand
 			player.stand();
+			while (!dealer.isStanding()) {
+				dealerMove();
+			}
 		}
 	}
 
@@ -72,31 +73,19 @@ public class BlackJack {
 	public void determineWinner() {
 		// checks for a winner
 		if (player.getPoints() == 21 || dealer.getPoints() > 21) {
-			displayDealerHand();
-			System.out.println("Points: " + dealer.getPoints());
-			displayPlayerHand();
-			System.out.println("Points: " + player.getPoints());
+			displayHands();
 			System.out.println("you win");
 			playAnother();
 		} else if (dealer.getPoints() == 21 || player.getPoints() > 21) {
-			displayDealerHand();
-			System.out.println("Points: " + dealer.getPoints());
-			displayPlayerHand();
-			System.out.println("Points: " + player.getPoints());
+			displayHands();
 			System.out.println("house wins");
 			playAnother();
 		} else if (player.getPoints() > dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
-			displayDealerHand();
-			System.out.println("Points: " + dealer.getPoints());
-			displayPlayerHand();
-			System.out.println("Points: " + player.getPoints());
+			displayHands();
 			System.out.println("you win");
 			playAnother();
 		} else if (player.getPoints() < dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
-			displayDealerHand();
-			System.out.println("Points: " + dealer.getPoints());
-			displayPlayerHand();
-			System.out.println("Points: " + player.getPoints());
+			displayHands();
 			// dealer wins hand
 			System.out.println("house wins");
 			playAnother();
@@ -142,17 +131,14 @@ public class BlackJack {
 		// creates a new game
 
 	}
-
-	public void displayPlayerHand() {
-		// displays the player's hand
-		System.out.println(player.getName() + "'s hand:");
-		System.out.println(player.getHand());
-	}
-
-	public void displayDealerHand() {
-		// displays the dealer's hand
+	
+	public void displayHands() {
 		System.out.println(dealer.getName() + "'s hand:");
 		System.out.println(dealer.getHand());
+		System.out.println(player.getName() + "'s hand:");
+		System.out.println(player.getHand());
+		
 	}
+
 
 }
