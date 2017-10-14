@@ -13,6 +13,10 @@ public class Hand {
 		hand.add(card);
 	}
 	
+	public Card revealOne() {
+		return hand.get(1);
+	}
+	
 	public int calculatePoints() {
 		int total = 0;
 		int aces = 0;

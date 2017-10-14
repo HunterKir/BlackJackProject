@@ -14,6 +14,10 @@ public class Dealer extends Player {
 		checkDeck();
 	}
 	
+	public Card showOne() {
+		return hand.revealOne();
+	}
+	
 	public void dealToDealer() {
 		//deals one card to the dealer
 		this.addToHand(deck.draw());

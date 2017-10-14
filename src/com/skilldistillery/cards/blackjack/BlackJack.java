@@ -23,7 +23,6 @@ public class BlackJack {
 		deal();
 		deal();
 		while (inGame) {
-			dealer.checkDeck();
 			determineWinner();
 			displayHands();
 			displayMenu();
@@ -134,7 +133,12 @@ public class BlackJack {
 	
 	public void displayHands() {
 		System.out.println(dealer.getName() + "'s hand:");
-		System.out.println(dealer.getHand());
+		if (!player.isStanding()) {
+			System.out.println(dealer.showOne());
+		}
+		else {
+			System.out.println(dealer.getHand());
+		}
 		System.out.println(player.getName() + "'s hand:");
 		System.out.println(player.getHand());
 		
