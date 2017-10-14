@@ -34,7 +34,7 @@ public class Dealer extends Player {
 		if (this.points < 17) {
 			dealToDealer();
 		}
-		else if (this.points < 21 && this.points < player.getPoints()) {
+		else if (player.isStanding() && this.points < player.getPoints()) {
 			dealToDealer();
 		}
 		else {

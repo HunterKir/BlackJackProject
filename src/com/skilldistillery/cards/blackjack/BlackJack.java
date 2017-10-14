@@ -12,44 +12,48 @@ public class BlackJack {
 		this.player = new Player(name);
 		this.dealer = new Dealer();
 	}
-	
+
 	public void deal() {
 		dealer.dealToPlayer(player);
 		dealer.dealToDealer();
 	}
-	
+
 	public void start() {
 		dealer.shuffle();
 		deal();
 		deal();
 		while (inGame) {
+			determineWinner();
 			displayDealerHand();
 			System.out.println("Points: " + dealer.getPoints());
 			displayPlayerHand();
 			System.out.println("Points: " + player.getPoints());
-			determineWinner();
 			displayMenu();
 			menuSelect(inputFilter(kb.next()));
+			dealerMove();
 		}
 	}
-	
+
 	public void menuSelect(int input) {
 		if (input == 1) {
 			// hit
 			player.hit(dealer);
-			dealer.hit(player);
-		}
-		else if (input == 2) {
+		} else if (input == 2) {
 			// stand
 			player.stand();
+		}
+	}
+
+	public void dealerMove() {
+		if (player.isStanding()) {
 			dealer.hit(player);
 		}
 	}
-	
+
 	public void displayMenu() {
 		System.out.println("1: HIT     2: STAND");
 	}
-	
+
 	public static int inputFilter(String input) {
 		int num = 0;
 		boolean loop = true;
@@ -67,21 +71,40 @@ public class BlackJack {
 
 	public void determineWinner() {
 		// checks for a winner
-		if (player.standing && dealer.standing) {
-			if (player.getPoints() > dealer.getPoints()) {
-				// player wins hand
-				System.out.println("you win");
-				playAnother();
-			} else if (player.getPoints() < dealer.getPoints()) {
-				// dealer wins hand
-				System.out.println("house wins");
-				playAnother();
-			} else {
-				// draw
-			}
+		if (player.getPoints() == 21 || dealer.getPoints() > 21) {
+			displayDealerHand();
+			System.out.println("Points: " + dealer.getPoints());
+			displayPlayerHand();
+			System.out.println("Points: " + player.getPoints());
+			System.out.println("you win");
+			playAnother();
+		} else if (dealer.getPoints() == 21 || player.getPoints() > 21) {
+			displayDealerHand();
+			System.out.println("Points: " + dealer.getPoints());
+			displayPlayerHand();
+			System.out.println("Points: " + player.getPoints());
+			System.out.println("house wins");
+			playAnother();
+		} else if (player.getPoints() > dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
+			displayDealerHand();
+			System.out.println("Points: " + dealer.getPoints());
+			displayPlayerHand();
+			System.out.println("Points: " + player.getPoints());
+			System.out.println("you win");
+			playAnother();
+		} else if (player.getPoints() < dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
+			displayDealerHand();
+			System.out.println("Points: " + dealer.getPoints());
+			displayPlayerHand();
+			System.out.println("Points: " + player.getPoints());
+			// dealer wins hand
+			System.out.println("house wins");
+			playAnother();
+		} else {
+			// draw
 		}
 	}
-	
+
 	public void playAnother() {
 		boolean invalid = true;
 		System.out.println("Play another hand?");
@@ -92,13 +115,13 @@ public class BlackJack {
 				nextHand();
 				player.setStanding(false);
 				dealer.setStanding(false);
+				deal();
+				deal();
 				invalid = false;
-			}
-			else if (input == 2) {
+			} else if (input == 2) {
 				endGame();
 				invalid = false;
-			}
-			else {
+			} else {
 				System.out.println("Invalid input. Try again.");
 			}
 		}
@@ -109,7 +132,7 @@ public class BlackJack {
 		System.out.println("Thanks for playing!");
 		System.exit(0);
 	}
-	
+
 	public void nextHand() {
 		player.newHand();
 		dealer.newHand();
@@ -117,7 +140,7 @@ public class BlackJack {
 
 	public void newGame() {
 		// creates a new game
-		
+
 	}
 
 	public void displayPlayerHand() {
