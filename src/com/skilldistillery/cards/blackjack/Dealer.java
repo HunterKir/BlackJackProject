@@ -12,12 +12,21 @@ public class Dealer extends Player {
 		this.bettingPool = 0;
 		this.sidePool = 0;
 	}
+	public Dealer(String name) {
+		this.deck = new Deck();
+		this.hand = new Hand();
+		this.name = name;
+		this.bettingPool = 0;
+		this.sidePool = 0;
+	}
 	public void dealToPlayer(Player player) {
 		//deals one card to the player
 		player.addToHand(deck.draw());
-		if (player.splitHand != null) {
-			player.addToSplitHand(deck.draw());
-		}
+		checkDeck();
+	}
+	
+	public void dealToSplit(Player player) {
+		player.addToSplitHand(deck.draw());
 		checkDeck();
 	}
 	

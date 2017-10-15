@@ -14,6 +14,11 @@ public class BlackJack {
 		this.player = new Player(name);
 		this.dealer = new Dealer();
 	}
+	
+	public BlackJack(String name, String name2) {
+		this.player = new Player(name);
+		this.dealer = new Dealer(name2);
+	}
 
 	public void deal() {
 		dealer.dealToPlayer(player);
@@ -38,8 +43,9 @@ public class BlackJack {
 			while (split) {
 				determineSplitWinner();
 				displaySplitHands();
-				displayMenu();
-				menuSelect(inputFilter(kb.next()));
+				displaySplitMenu();
+				splitMenuSelect(inputFilter(kb.next()));
+				determineSplitWinner();
 			}
 			dealerMove();
 		}
@@ -81,10 +87,25 @@ public class BlackJack {
 				placeSideBet();
 				split = true;
 				player.hit(dealer);
+				player.hitToSplit(dealer);
 			}
 		}
 	}
-
+	public void splitMenuSelect(int input) {
+		if (input == 1) {
+			// hit
+			player.hit(dealer);
+		} else if (input == 2) {
+			// hit to split
+			player.hitToSplit(dealer);
+		} else if (input == 3) {
+			// stand
+			player.stand();
+			while (!dealer.isStanding()) {
+				dealerMove();
+			}
+		}
+	}
 	public void dealerMove() {
 		if (player.isStanding()) {
 			dealer.hit(player);
@@ -102,9 +123,11 @@ public class BlackJack {
 		}
 	}
 	public void displayMenu() {
-		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN     4. SPLIT");
+		System.out.println("1: HIT     2: STAND     3: DOUBLE DOWN     4: SPLIT");
 	}
-	
+	public void displaySplitMenu() {
+		System.out.println("1: HIT HAND 1     2: HIT HAND 2     3: STAND");
+	}
 	public void placeSideBet() {
 		boolean invalidBet = true;
 		while (invalidBet) {
@@ -162,7 +185,7 @@ public class BlackJack {
 				System.out.println("BLACKJACK!");
 				System.out.println("----------");
 			}
-			System.out.println("You won $" + dealer.getSidePool() + "!");
+			System.out.println("You won the side pool of $" + dealer.getSidePool() + "!");
 			dealer.giveSidePool(player);
 			player.resetSplitHand();
 			split = false;
@@ -196,7 +219,7 @@ public class BlackJack {
 			}
 		} else if (player.getSplitPoints() > dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
 			displaySplitHands();
-			System.out.println("You won $" + dealer.getSidePool() + "!");
+			System.out.println("You won the side pool of $" + dealer.getSidePool() + "!");
 			dealer.giveSidePool(player);
 			player.resetSplitHand();
 			split = false;
@@ -244,6 +267,8 @@ public class BlackJack {
 		} else if (dealer.getPoints() == 21 || player.getPoints() > 21) {
 			displayHands();
 			if (dealer.getPoints() == 21) {
+				System.out.println(dealer.getName() + "'s hand:");
+				System.out.println(dealer.getHand());
 				System.out.println("----------");
 				System.out.println("BLACKJACK!");
 				System.out.println("----------");

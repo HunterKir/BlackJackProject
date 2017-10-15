@@ -27,6 +27,10 @@ public class Player {
 		((Dealer) player).dealToPlayer(this);
 	}
 	
+	public void hitToSplit(Player player) {
+		((Dealer) player).dealToSplit(this);
+	}
+	
 	public void doubleDown(Player player) {
 		//player doubles down on bet, only gets one more card
 		((Dealer) player).dealToPlayer(this);
