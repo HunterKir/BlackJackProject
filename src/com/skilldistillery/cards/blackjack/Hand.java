@@ -16,6 +16,7 @@ public class Hand {
 	public Card getCardAtIndex(int idx) {
 		return hand.get(idx);
 	}
+	
 	public Card removeCardAtOne() {
 		return hand.remove(1);
 	}

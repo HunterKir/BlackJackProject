@@ -12,6 +12,7 @@ public class Dealer extends Player {
 		this.bettingPool = 0;
 		this.sidePool = 0;
 	}
+	
 	public Dealer(String name) {
 		this.deck = new Deck();
 		this.hand = new Hand();
@@ -19,6 +20,7 @@ public class Dealer extends Player {
 		this.bettingPool = 0;
 		this.sidePool = 0;
 	}
+	
 	public void dealToPlayer(Player player) {
 		//deals one card to the player
 		player.addToHand(deck.draw());
@@ -33,12 +35,15 @@ public class Dealer extends Player {
 	public int getSidePool() {
 		return sidePool;
 	}
+	
 	public void setSidePool(int sidePool) {
 		this.sidePool = sidePool;
 	}
+	
 	public int getBettingPool() {
 		return bettingPool;
 	}
+	
 	public void setBettingPool(int bettingPool) {
 		this.bettingPool = bettingPool;
 	}
@@ -48,6 +53,7 @@ public class Dealer extends Player {
 		player.setMoney(player.getMoney() + bettingPool);
 		this.bettingPool = 0;
 	}
+	
 	public void giveSidePool(Player player) {
 		//dealer gives the winner the contents of the pool
 		player.setMoney(player.getMoney() + sidePool);
@@ -98,5 +104,4 @@ public class Dealer extends Player {
 			stand();
 		}
 	}
-	
 }

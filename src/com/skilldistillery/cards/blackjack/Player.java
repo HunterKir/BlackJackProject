@@ -66,6 +66,7 @@ public class Player {
 		}
 		return points;
 	}
+	
 	public int getSplitPoints() {
 		splitPoints = splitHand.calculatePoints();
 		if (splitPoints > 21) {
@@ -73,9 +74,11 @@ public class Player {
 		}
 		return splitPoints;
 	}
+	
 	public String getName() {
 		return name;
 	}
+	
 	public void resetSplitHand() {
 		this.splitHand = null;
 	}

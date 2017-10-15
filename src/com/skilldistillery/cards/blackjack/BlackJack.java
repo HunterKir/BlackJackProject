@@ -91,6 +91,7 @@ public class BlackJack {
 			}
 		}
 	}
+	
 	public void splitMenuSelect(int input) {
 		if (input == 1) {
 			// hit
@@ -106,6 +107,7 @@ public class BlackJack {
 			}
 		}
 	}
+	
 	public void dealerMove() {
 		if (player.isStanding()) {
 			dealer.hit(player);
@@ -122,12 +124,15 @@ public class BlackJack {
 			dealer.setBettingPool(dealer.getBettingPool()*2);
 		}
 	}
+	
 	public void displayMenu() {
 		System.out.println("1: HIT     2: STAND     3: DOUBLE DOWN     4: SPLIT");
 	}
+	
 	public void displaySplitMenu() {
 		System.out.println("1: HIT HAND 1     2: HIT HAND 2     3: STAND");
 	}
+	
 	public void placeSideBet() {
 		boolean invalidBet = true;
 		while (invalidBet) {
@@ -154,6 +159,7 @@ public class BlackJack {
 		}
 		
 	}
+	
 	public boolean verifyBet(int money) {
 		if (player.getMoney() >= money) {
 			return true;
@@ -163,6 +169,7 @@ public class BlackJack {
 			return false;
 		}
 	}
+	
 	public static int inputFilter(String input) {
 		int num = 0;
 		boolean loop = true;
@@ -177,6 +184,7 @@ public class BlackJack {
 		}
 		return num;
 	}
+	
 	public void determineSplitWinner() {
 		if (player.getSplitPoints() == 21 || dealer.getPoints() > 21) {
 			displayHands();
@@ -189,8 +197,6 @@ public class BlackJack {
 			dealer.giveSidePool(player);
 			player.resetSplitHand();
 			split = false;
-//			playAnother();
-//			nextHand = true;
 		} else if (dealer.getPoints() == 21 || player.getSplitPoints() > 21) {
 			displaySplitHands();
 			if (dealer.getPoints() == 21) {
@@ -210,8 +216,6 @@ public class BlackJack {
 				split = false;
 			}
 			if (player.getMoney() > 0) {
-//				playAnother();
-//				nextHand = true;
 			}
 			else {
 				System.out.println("You're out of money! GAME OVER.");
@@ -223,34 +227,28 @@ public class BlackJack {
 			dealer.giveSidePool(player);
 			player.resetSplitHand();
 			split = false;
-//			playAnother();
-//			nextHand = true;
 		} else if (player.getSplitPoints() < dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
 			displaySplitHands();
 			System.out.println("You lost $" + (dealer.getSidePool()/2) + "!");
 			player.resetSplitHand();
 			split = false;
 			if (player.getMoney() > 0) {
-//				playAnother();
-//				nextHand = true;
 			}
 			else {
 				System.out.println("You're out of money! GAME OVER.");
 				endGame();
 			}
 		} else if (player.getSplitPoints() == dealer.getPoints() && player.isStanding() && dealer.isStanding()){
-			// draw
 			System.out.println("-----");
 			System.out.println("PUSH!");
 			System.out.println("-----");
-//			nextHand = true;
 			dealer.setSidePool(dealer.getSidePool()/2);
 			dealer.giveSidePool(player);
 			player.resetSplitHand();
 			split = false;
-//			playAnother();
 		}
 	}
+	
 	public void determineWinner() {
 		// checks for a winner
 		if (player.getPoints() == 21 || dealer.getPoints() > 21) {
@@ -351,11 +349,6 @@ public class BlackJack {
 		dealer.newHand();
 	}
 
-	public void newGame() {
-		// creates a new game
-
-	}
-	
 	public void displaySplitHands() {
 		System.out.println(dealer.getName() + "'s hand:");
 		if (!player.isStanding()) {
@@ -380,8 +373,5 @@ public class BlackJack {
 		}
 		System.out.println(player.getName() + "'s hand:");
 		System.out.println(player.getHand());
-		
 	}
-
-
 }
