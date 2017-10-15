@@ -8,6 +8,7 @@ public class BlackJack {
 	private Dealer dealer;
 	private boolean inGame = true;
 	private boolean nextHand = true;
+	private boolean split = false;
 
 	public BlackJack(String name) {
 		this.player = new Player(name);
@@ -34,6 +35,12 @@ public class BlackJack {
 			displayMenu();
 			determineWinner();
 			menuSelect(inputFilter(kb.next()));
+			while (split) {
+				determineSplitWinner();
+				displaySplitHands();
+				displayMenu();
+				menuSelect(inputFilter(kb.next()));
+			}
 			dealerMove();
 		}
 	}
@@ -59,10 +66,22 @@ public class BlackJack {
 			}
 		} else if (input == 4) {
 			//split
-			player.split();
-			displayPlayerMoney();
-			System.out.println("Bet on your second hand.");
-			
+			if (split) {
+				System.out.println("You can only split once!");
+				menuSelect(inputFilter(kb.next()));
+			}
+			else if (!player.canSplit()) {
+				System.out.println("You can't split with that hand!");
+				menuSelect(inputFilter(kb.next()));
+			}
+			else {
+				player.split();
+				displayPlayerMoney();
+				System.out.println("Bet on your second hand.");
+				placeSideBet();
+				split = true;
+				player.hit(dealer);
+			}
 		}
 	}
 
@@ -84,6 +103,19 @@ public class BlackJack {
 	}
 	public void displayMenu() {
 		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN     4. SPLIT");
+	}
+	
+	public void placeSideBet() {
+		boolean invalidBet = true;
+		while (invalidBet) {
+			System.out.println("Place your bet.");
+			int money = inputFilter(kb.next());
+			if (verifyBet(money)) {
+				dealer.setSidePool(money * 2);
+				player.setMoney(player.getMoney() - money);
+				invalidBet = false;
+			}
+		}
 	}
 	
 	public void placeBet() {
@@ -122,7 +154,80 @@ public class BlackJack {
 		}
 		return num;
 	}
-
+	public void determineSplitWinner() {
+		if (player.getSplitPoints() == 21 || dealer.getPoints() > 21) {
+			displayHands();
+			if (player.getSplitPoints() == 21) {
+				System.out.println("----------");
+				System.out.println("BLACKJACK!");
+				System.out.println("----------");
+			}
+			System.out.println("You won $" + dealer.getSidePool() + "!");
+			dealer.giveSidePool(player);
+			player.resetSplitHand();
+			split = false;
+//			playAnother();
+//			nextHand = true;
+		} else if (dealer.getPoints() == 21 || player.getSplitPoints() > 21) {
+			displaySplitHands();
+			if (dealer.getPoints() == 21) {
+				System.out.println("----------");
+				System.out.println("BLACKJACK!");
+				System.out.println("----------");
+				System.out.println("You lost $" + (dealer.getSidePool()/2) + "!");
+				player.resetSplitHand();
+				split = false;
+			}
+			else {
+				System.out.println("-----");
+				System.out.println("BUST!");
+				System.out.println("-----");
+				System.out.println("You lost $" + (dealer.getSidePool()/2) + "!");
+				player.resetSplitHand();
+				split = false;
+			}
+			if (player.getMoney() > 0) {
+//				playAnother();
+//				nextHand = true;
+			}
+			else {
+				System.out.println("You're out of money! GAME OVER.");
+				endGame();
+			}
+		} else if (player.getSplitPoints() > dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
+			displaySplitHands();
+			System.out.println("You won $" + dealer.getSidePool() + "!");
+			dealer.giveSidePool(player);
+			player.resetSplitHand();
+			split = false;
+//			playAnother();
+//			nextHand = true;
+		} else if (player.getSplitPoints() < dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
+			displaySplitHands();
+			System.out.println("You lost $" + (dealer.getSidePool()/2) + "!");
+			player.resetSplitHand();
+			split = false;
+			if (player.getMoney() > 0) {
+//				playAnother();
+//				nextHand = true;
+			}
+			else {
+				System.out.println("You're out of money! GAME OVER.");
+				endGame();
+			}
+		} else if (player.getSplitPoints() == dealer.getPoints() && player.isStanding() && dealer.isStanding()){
+			// draw
+			System.out.println("-----");
+			System.out.println("PUSH!");
+			System.out.println("-----");
+//			nextHand = true;
+			dealer.setSidePool(dealer.getSidePool()/2);
+			dealer.giveSidePool(player);
+			player.resetSplitHand();
+			split = false;
+//			playAnother();
+		}
+	}
 	public void determineWinner() {
 		// checks for a winner
 		if (player.getPoints() == 21 || dealer.getPoints() > 21) {
@@ -224,6 +329,20 @@ public class BlackJack {
 	public void newGame() {
 		// creates a new game
 
+	}
+	
+	public void displaySplitHands() {
+		System.out.println(dealer.getName() + "'s hand:");
+		if (!player.isStanding()) {
+			System.out.println(dealer.showOne());
+		}
+		else {
+			System.out.println(dealer.getHand());
+		}
+		System.out.println(player.getName() + "'s hand 1:");
+		System.out.println(player.getHand());
+		System.out.println(player.getName() + "'s hand 2:");
+		System.out.println(player.getSplitHand());
 	}
 	
 	public void displayHands() {

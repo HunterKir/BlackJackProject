@@ -3,19 +3,30 @@ package com.skilldistillery.cards.blackjack;
 public class Dealer extends Player {
 	private Deck deck;
 	private int bettingPool;
+	private int sidePool;
 	
 	public Dealer() {
 		this.deck = new Deck();
 		this.hand = new Hand();
 		this.name = "Dealer";
 		this.bettingPool = 0;
+		this.sidePool = 0;
 	}
 	public void dealToPlayer(Player player) {
 		//deals one card to the player
 		player.addToHand(deck.draw());
+		if (player.splitHand != null) {
+			player.addToSplitHand(deck.draw());
+		}
 		checkDeck();
 	}
 	
+	public int getSidePool() {
+		return sidePool;
+	}
+	public void setSidePool(int sidePool) {
+		this.sidePool = sidePool;
+	}
 	public int getBettingPool() {
 		return bettingPool;
 	}
@@ -28,9 +39,14 @@ public class Dealer extends Player {
 		player.setMoney(player.getMoney() + bettingPool);
 		this.bettingPool = 0;
 	}
+	public void giveSidePool(Player player) {
+		//dealer gives the winner the contents of the pool
+		player.setMoney(player.getMoney() + sidePool);
+		this.sidePool = 0;
+	}
 	
 	public Card showOne() {
-		return hand.revealOne();
+		return hand.getCardAtIndex(1);
 	}
 	
 	public void dealToDealer() {

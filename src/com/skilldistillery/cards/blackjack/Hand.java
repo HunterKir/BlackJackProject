@@ -13,12 +13,20 @@ public class Hand {
 		hand.add(card);
 	}
 	
-	public Card revealOne() {
-		return hand.get(1);
+	public Card getCardAtIndex(int idx) {
+		return hand.get(idx);
+	}
+	public Card removeCardAtOne() {
+		return hand.remove(1);
 	}
 	
-	public Card cardAtOne() {
-		return hand.remove(1);
+	public boolean compareCards() {
+		if (hand.get(0).getValue() == hand.get(1).getValue()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public int calculatePoints() {

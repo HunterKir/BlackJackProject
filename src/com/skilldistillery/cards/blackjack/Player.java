@@ -4,6 +4,7 @@ public class Player {
 	protected Hand hand;
 	protected Hand splitHand;
 	protected int points;
+	protected int splitPoints;
 	protected String name;
 	protected boolean standing;
 	protected int money;
@@ -51,20 +52,32 @@ public class Player {
 	
 	public void split() {
 		splitHand = new Hand();
-		addToSplitHand(hand.cardAtOne());
+		addToSplitHand(hand.removeCardAtOne());
 	}
 
 	public int getPoints() {
 		points = hand.calculatePoints();
 		if (points > 21) {
 			standing = true;
-//			points = 0;
 		}
 		return points;
 	}
-
+	public int getSplitPoints() {
+		splitPoints = splitHand.calculatePoints();
+		if (splitPoints > 21) {
+			standing = true;
+		}
+		return splitPoints;
+	}
 	public String getName() {
 		return name;
+	}
+	public void resetSplitHand() {
+		this.splitHand = null;
+	}
+	
+	public boolean canSplit() {
+		return hand.compareCards();
 	}
 
 	public void newHand() {
