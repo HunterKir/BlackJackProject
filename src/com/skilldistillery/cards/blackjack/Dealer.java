@@ -2,16 +2,40 @@ package com.skilldistillery.cards.blackjack;
 
 public class Dealer extends Player {
 	private Deck deck;
+	private int bettingPool;
 	
 	public Dealer() {
 		this.deck = new Deck();
 		this.hand = new Hand();
 		this.name = "Dealer";
+		this.bettingPool = 0;
 	}
 	public void dealToPlayer(Player player) {
 		//deals one card to the player
 		player.addToHand(deck.draw());
 		checkDeck();
+	}
+	
+	public int getBettingPool() {
+		return bettingPool;
+	}
+	public void setBettingPool(int bettingPool) {
+		this.bettingPool = bettingPool;
+	}
+	public void pool(Player player, int money) {
+		//takes money from the player, checks to see if the player has that much
+		//dealer holds the total amount of bets in the pool and doubles it
+		if (player.getMoney() >= money) {
+			player.setMoney(player.getMoney() - money);
+			
+		}
+		else {
+			System.out.println("You don't have that much money!");
+		}
+	}
+	
+	public void givePool() {
+		//dealer gives the winner the contents of the pool
 	}
 	
 	public Card showOne() {

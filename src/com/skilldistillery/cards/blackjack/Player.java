@@ -5,6 +5,7 @@ public class Player {
 	protected int points;
 	protected String name;
 	protected boolean standing;
+	protected int money;
 	
 	public Player() {
 		this.hand = new Hand();
@@ -16,14 +17,26 @@ public class Player {
 		this.hand = new Hand();
 		this.name = name;
 		this.standing = false;
+		this.money = 100;
 	}
-	
+//	public void bet() {
+//		//player bets money, puts it into the dealer's pool
+//		
+//	}
 	
 	public void hit(Player player) {
 		//makes the dealer deal a card to the player
 		((Dealer) player).dealToPlayer(this);
 	}
 	
+	public int getMoney() {
+		return money;
+	}
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
 	public boolean isStanding() {
 		return standing;
 	}
