@@ -7,6 +7,7 @@ public class BlackJack {
 	private Player player;
 	private Dealer dealer;
 	private boolean inGame = true;
+	private boolean nextHand = true;
 
 	public BlackJack(String name) {
 		this.player = new Player(name);
@@ -24,11 +25,21 @@ public class BlackJack {
 		deal();
 		while (inGame) {
 			determineWinner();
+			if (nextHand) {
+				displayPlayerMoney();
+				placeBet();
+			}
 			displayHands();
+			nextHand = false;
 			displayMenu();
+			determineWinner();
 			menuSelect(inputFilter(kb.next()));
 			dealerMove();
 		}
+	}
+	
+	public void displayPlayerMoney() {
+		System.out.println("You have $" + player.getMoney() + ".");
 	}
 
 	public void menuSelect(int input) {
@@ -49,11 +60,44 @@ public class BlackJack {
 			dealer.hit(player);
 		}
 	}
-
-	public void displayMenu() {
-		System.out.println("1: HIT     2: STAND");
+	
+	public void doubleDown() {
+		if (player.getMoney() < (dealer.getBettingPool()/2)) {
+			System.out.println("You don't have enough money to double down on that bet!");
+		}
+		else {
+			player.doubleDown(player);
+			player.setMoney(player.getMoney() - (dealer.getBettingPool()/2));
+			dealer.setBettingPool(dealer.getBettingPool()*2);
+		}
 	}
 
+	public void displayMenu() {
+		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN");
+	}
+	
+	public void placeBet() {
+		boolean invalidBet = true;
+		while (invalidBet) {
+			System.out.println("Place your bet.");
+			int money = inputFilter(kb.next());
+			if (verifyBet(money)) {
+				dealer.setBettingPool(money*2);
+				player.setMoney(player.getMoney() - money);
+				invalidBet = false;
+			}
+		}
+		
+	}
+	public boolean verifyBet(int money) {
+		if (player.getMoney() >= money) {
+			return true;
+		}
+		else {
+			System.out.println("You don't have that much money!");
+			return false;
+		}
+	}
 	public static int inputFilter(String input) {
 		int num = 0;
 		boolean loop = true;
@@ -73,23 +117,63 @@ public class BlackJack {
 		// checks for a winner
 		if (player.getPoints() == 21 || dealer.getPoints() > 21) {
 			displayHands();
-			System.out.println("you win");
+			if (player.getPoints() == 21) {
+				System.out.println("----------");
+				System.out.println("BLACKJACK!");
+				System.out.println("----------");
+			}
+			System.out.println("You won $" + dealer.getBettingPool() + "!");
+			dealer.givePool(player);
 			playAnother();
+			nextHand = true;
 		} else if (dealer.getPoints() == 21 || player.getPoints() > 21) {
 			displayHands();
-			System.out.println("house wins");
-			playAnother();
+			if (dealer.getPoints() == 21) {
+				System.out.println("----------");
+				System.out.println("BLACKJACK!");
+				System.out.println("----------");
+				System.out.println("You lost $" + (dealer.getBettingPool()/2) + "!");
+			}
+			else {
+				System.out.println("-----");
+				System.out.println("BUST!");
+				System.out.println("-----");
+				System.out.println("You lost $" + (dealer.getBettingPool()/2) + "!");
+			}
+			if (player.getMoney() > 0) {
+				playAnother();
+				nextHand = true;
+			}
+			else {
+				System.out.println("You're out of money! GAME OVER.");
+				endGame();
+			}
 		} else if (player.getPoints() > dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
 			displayHands();
-			System.out.println("you win");
+			System.out.println("You won $" + dealer.getBettingPool() + "!");
+			dealer.givePool(player);
 			playAnother();
+			nextHand = true;
 		} else if (player.getPoints() < dealer.getPoints() && (player.isStanding() && dealer.isStanding())) {
 			displayHands();
-			// dealer wins hand
-			System.out.println("house wins");
-			playAnother();
-		} else {
+			System.out.println("You lost $" + (dealer.getBettingPool()/2) + "!");
+			if (player.getMoney() > 0) {
+				playAnother();
+				nextHand = true;
+			}
+			else {
+				System.out.println("You're out of money! GAME OVER.");
+				endGame();
+			}
+		} else if (player.getPoints() == dealer.getPoints() && player.isStanding() && dealer.isStanding()){
 			// draw
+			System.out.println("-----");
+			System.out.println("PUSH!");
+			System.out.println("-----");
+			nextHand = true;
+			dealer.setBettingPool(dealer.getBettingPool()/2);
+			dealer.givePool(player);
+			playAnother();
 		}
 	}
 
@@ -118,6 +202,7 @@ public class BlackJack {
 	public void endGame() {
 		// ends the game, quits the app
 		System.out.println("Thanks for playing!");
+		System.out.println("Total winnings = $" + (player.getMoney()-100) + ".");
 		System.exit(0);
 	}
 

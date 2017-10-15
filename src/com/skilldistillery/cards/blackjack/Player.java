@@ -28,7 +28,11 @@ public class Player {
 		//makes the dealer deal a card to the player
 		((Dealer) player).dealToPlayer(this);
 	}
-	
+	public void doubleDown(Player player) {
+		//player doubles down on bet, only gets one more card
+		((Dealer) player).dealToPlayer(this);
+		this.standing = true;
+	}
 	public int getMoney() {
 		return money;
 	}

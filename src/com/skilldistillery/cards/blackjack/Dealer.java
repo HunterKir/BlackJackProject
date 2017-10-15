@@ -22,20 +22,11 @@ public class Dealer extends Player {
 	public void setBettingPool(int bettingPool) {
 		this.bettingPool = bettingPool;
 	}
-	public void pool(Player player, int money) {
-		//takes money from the player, checks to see if the player has that much
-		//dealer holds the total amount of bets in the pool and doubles it
-		if (player.getMoney() >= money) {
-			player.setMoney(player.getMoney() - money);
-			
-		}
-		else {
-			System.out.println("You don't have that much money!");
-		}
-	}
 	
-	public void givePool() {
+	public void givePool(Player player) {
 		//dealer gives the winner the contents of the pool
+		player.setMoney(player.getMoney() + bettingPool);
+		this.bettingPool = 0;
 	}
 	
 	public Card showOne() {
