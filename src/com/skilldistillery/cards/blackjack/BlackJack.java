@@ -57,6 +57,12 @@ public class BlackJack {
 			while (!dealer.isStanding()) {
 				dealerMove();
 			}
+		} else if (input == 4) {
+			//split
+			player.split();
+			displayPlayerMoney();
+			System.out.println("Bet on your second hand.");
+			
 		}
 	}
 
@@ -77,7 +83,7 @@ public class BlackJack {
 		}
 	}
 	public void displayMenu() {
-		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN");
+		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN     4. SPLIT");
 	}
 	
 	public void placeBet() {
@@ -86,7 +92,7 @@ public class BlackJack {
 			System.out.println("Place your bet.");
 			int money = inputFilter(kb.next());
 			if (verifyBet(money)) {
-				dealer.setBettingPool(money*2);
+				dealer.setBettingPool(money * 2);
 				player.setMoney(player.getMoney() - money);
 				invalidBet = false;
 			}

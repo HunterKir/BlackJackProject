@@ -2,6 +2,7 @@ package com.skilldistillery.cards.blackjack;
 
 public class Player {
 	protected Hand hand;
+	protected Hand splitHand;
 	protected int points;
 	protected String name;
 	protected boolean standing;
@@ -19,20 +20,18 @@ public class Player {
 		this.standing = false;
 		this.money = 100;
 	}
-//	public void bet() {
-//		//player bets money, puts it into the dealer's pool
-//		
-//	}
 	
 	public void hit(Player player) {
 		//makes the dealer deal a card to the player
 		((Dealer) player).dealToPlayer(this);
 	}
+	
 	public void doubleDown(Player player) {
 		//player doubles down on bet, only gets one more card
 		((Dealer) player).dealToPlayer(this);
 		this.standing = true;
 	}
+	
 	public int getMoney() {
 		return money;
 	}
@@ -48,6 +47,11 @@ public class Player {
 	public void stand() {
 		//locks in the player's points
 		standing = true;
+	}
+	
+	public void split() {
+		splitHand = new Hand();
+		addToSplitHand(hand.cardAtOne());
 	}
 
 	public int getPoints() {
@@ -71,7 +75,15 @@ public class Player {
 		//adds a card to the hand
 		hand.addCard(card);
 	}
-
+	
+	public void addToSplitHand(Card card) {
+		splitHand.addCard(card);
+	}
+	
+	public Hand getSplitHand() {
+		return splitHand;
+	}
+	
 	public Hand getHand() {
 		return hand;
 	}
