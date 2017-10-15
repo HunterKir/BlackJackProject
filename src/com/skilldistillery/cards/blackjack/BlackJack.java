@@ -52,6 +52,11 @@ public class BlackJack {
 			while (!dealer.isStanding()) {
 				dealerMove();
 			}
+		} else if (input == 3) {
+			doubleDown();
+			while (!dealer.isStanding()) {
+				dealerMove();
+			}
 		}
 	}
 
@@ -66,12 +71,11 @@ public class BlackJack {
 			System.out.println("You don't have enough money to double down on that bet!");
 		}
 		else {
-			player.doubleDown(player);
+			player.doubleDown(dealer);
 			player.setMoney(player.getMoney() - (dealer.getBettingPool()/2));
 			dealer.setBettingPool(dealer.getBettingPool()*2);
 		}
 	}
-
 	public void displayMenu() {
 		System.out.println("1: HIT     2: STAND     3. DOUBLE DOWN");
 	}
