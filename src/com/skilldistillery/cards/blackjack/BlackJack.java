@@ -41,10 +41,12 @@ public class BlackJack {
 			menuSelect(inputFilter(kb.next()));
 			while (split) {
 				determineSplitWinner();
+				determineWinner();
 				displaySplitHands();
 				displaySplitMenu();
 				splitMenuSelect(inputFilter(kb.next()));
 				determineSplitWinner();
+				determineWinner();
 			}
 			dealerMove();
 		}
