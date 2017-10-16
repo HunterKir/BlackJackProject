@@ -35,11 +35,10 @@ public class BlackJack {
 				displayPlayerMoney();
 				placeBet();
 			}
-			displayHands();
 			nextHand = false;
+			displayHands();
 			displayMenu();
 			menuSelect(inputFilter(kb.next()));
-			determineWinner();
 			while (split) {
 				determineSplitWinner();
 				displaySplitHands();
@@ -83,11 +82,11 @@ public class BlackJack {
 				//split
 				if (split) {
 					System.out.println("You can only split once!");
-					menuSelect(inputFilter(kb.next()));
+					input = inputFilter(kb.next());
 				}
 				else if (!player.canSplit()) {
 					System.out.println("You can't split with that hand!");
-					menuSelect(inputFilter(kb.next()));
+					input = inputFilter(kb.next());
 				}
 				else {
 					player.split();
@@ -97,6 +96,7 @@ public class BlackJack {
 					split = true;
 					player.hit(dealer);
 					player.hitToSplit(dealer);
+					invalid = false;
 				}
 			}
 		}
@@ -277,8 +277,6 @@ public class BlackJack {
 		} else if (dealer.getPoints() == 21 || player.getPoints() > 21) {
 			displayHands();
 			if (dealer.getPoints() == 21) {
-				System.out.println(dealer.getName() + "'s hand:");
-				System.out.println(dealer.getHand());
 				System.out.println("----------");
 				System.out.println("BLACKJACK!");
 				System.out.println("----------");
@@ -353,6 +351,7 @@ public class BlackJack {
 		// ends the game, quits the app
 		System.out.println("Thanks for playing!");
 		System.out.println("Total winnings = $" + (player.getMoney()-100) + ".");
+		kb.close();
 		System.exit(0);
 	}
 
