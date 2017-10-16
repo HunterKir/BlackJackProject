@@ -38,8 +38,8 @@ public class BlackJack {
 			displayHands();
 			nextHand = false;
 			displayMenu();
-			determineWinner();
 			menuSelect(inputFilter(kb.next()));
+			determineWinner();
 			while (split) {
 				determineSplitWinner();
 				displaySplitHands();
@@ -56,38 +56,48 @@ public class BlackJack {
 	}
 
 	public void menuSelect(int input) {
-		if (input == 1) {
-			// hit
-			player.hit(dealer);
-		} else if (input == 2) {
-			// stand
-			player.stand();
-			while (!dealer.isStanding()) {
-				dealerMove();
-			}
-		} else if (input == 3) {
-			doubleDown();
-			while (!dealer.isStanding()) {
-				dealerMove();
-			}
-		} else if (input == 4) {
-			//split
-			if (split) {
-				System.out.println("You can only split once!");
-				menuSelect(inputFilter(kb.next()));
-			}
-			else if (!player.canSplit()) {
-				System.out.println("You can't split with that hand!");
-				menuSelect(inputFilter(kb.next()));
-			}
-			else {
-				player.split();
-				displayPlayerMoney();
-				System.out.println("Bet on your second hand.");
-				placeSideBet();
-				split = true;
+		boolean invalid = true;
+		while (invalid) {
+			if (input == 1) {
+				// hit
 				player.hit(dealer);
-				player.hitToSplit(dealer);
+				invalid = false;
+			} else if (input == 2) {
+				// stand
+				invalid = false;
+				player.stand();
+				while (!dealer.isStanding()) {
+					dealerMove();
+				}
+			} else if (input == 3) {
+				if (doubleDown()) {
+					invalid = false;
+					while (!dealer.isStanding()) {
+						dealerMove();
+					}
+				}
+				else {
+					input = inputFilter(kb.next());
+				}
+			} else if (input == 4) {
+				//split
+				if (split) {
+					System.out.println("You can only split once!");
+					menuSelect(inputFilter(kb.next()));
+				}
+				else if (!player.canSplit()) {
+					System.out.println("You can't split with that hand!");
+					menuSelect(inputFilter(kb.next()));
+				}
+				else {
+					player.split();
+					displayPlayerMoney();
+					System.out.println("Bet on your second hand.");
+					placeSideBet();
+					split = true;
+					player.hit(dealer);
+					player.hitToSplit(dealer);
+				}
 			}
 		}
 	}
@@ -114,14 +124,16 @@ public class BlackJack {
 		}
 	}
 	
-	public void doubleDown() {
+	public boolean doubleDown() {
 		if (player.getMoney() < (dealer.getBettingPool()/2)) {
 			System.out.println("You don't have enough money to double down on that bet!");
+			return false;
 		}
 		else {
 			player.doubleDown(dealer);
 			player.setMoney(player.getMoney() - (dealer.getBettingPool()/2));
 			dealer.setBettingPool(dealer.getBettingPool()*2);
+			return true;
 		}
 	}
 	

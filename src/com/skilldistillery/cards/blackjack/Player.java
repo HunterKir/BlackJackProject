@@ -50,7 +50,6 @@ public class Player {
 	}
 	
 	public void stand() {
-		//locks in the player's points
 		standing = true;
 	}
 	
