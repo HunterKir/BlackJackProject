@@ -100,6 +100,8 @@ public class BlackJack {
 					player.hitToSplit(dealer);
 					invalid = false;
 				}
+			} else {
+				input = inputFilter(kb.next());
 			}
 		}
 	}
@@ -117,6 +119,8 @@ public class BlackJack {
 			while (!dealer.isStanding()) {
 				dealerMove();
 			}
+		} else {
+			input = inputFilter(kb.next());
 		}
 	}
 	
